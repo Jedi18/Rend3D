@@ -4,6 +4,7 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "Shader.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -40,6 +41,8 @@ int main()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
+	Shader shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
+
 	/* --------------------------- MAIN LOOP  -----------------------*/
 	while (!glfwWindowShouldClose(window))
 	{
@@ -47,6 +50,7 @@ int main()
 
 		vbo.Bind();
 		ibo.Bind();
+		shader.Use();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
