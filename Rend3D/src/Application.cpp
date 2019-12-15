@@ -2,6 +2,9 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
@@ -16,11 +19,35 @@ int main()
 	// set function callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+	/*
+		Test Data
+	*/
+	float vertices[] = {
+		0.5f, 0.5f, 1.0f,
+		-0.5f, 0.5f, 1.0f,
+		-0.5f, -0.5f, 1.0f,
+		0.5f, -0.5f, 1.0f
+	};
+
+	unsigned int indices[] = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	VertexBuffer vbo(sizeof(vertices), vertices);
+	IndexBuffer ibo(sizeof(indices), indices);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), 0);
 
 	/* --------------------------- MAIN LOOP  -----------------------*/
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);
+
+		vbo.Bind();
+		ibo.Bind();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -34,9 +61,9 @@ int main()
 GLFWwindow* Initialization()
 {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Rend3D", NULL, NULL);
 
