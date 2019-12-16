@@ -1,6 +1,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include<glm/glm.hpp>
+#include<glm/gtc/matrix_transform.hpp>
+#include<glm/gtc/type_ptr.hpp>
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
@@ -8,6 +11,7 @@
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
 #include "Rectangle.h"
+#include "Cube.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -24,7 +28,7 @@ int main()
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	VertexArray vao;
-	Rectangle rect1(vao);
+	Cube cube(vao);
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 
@@ -36,7 +40,25 @@ int main()
 		vao.Bind();
 		shader.Use();
 
-		rect1.Draw();
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
+
+		glm::mat4 view = glm::mat4(1.0f);
+		view = glm::translate(view, glm::vec3(-1.5f, 0.2f, 0.0f));
+		view = glm::rotate(view, glm::radians(10.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+
+		glm::mat4 projection = glm::mat4(1.0f);
+		projection = glm::perspective(glm::radians(45.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+
+		unsigned int modelloc = glGetUniformLocation(shader.program, "model");
+		unsigned int viewloc = glGetUniformLocation(shader.program, "view");
+		unsigned int projloc = glGetUniformLocation(shader.program, "projection");
+
+		glUniformMatrix4fv(viewloc, 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(projloc, 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(modelloc, 1, GL_FALSE, glm::value_ptr(model));
+
+		cube.Draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

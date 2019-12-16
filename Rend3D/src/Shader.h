@@ -5,9 +5,8 @@
 
 class Shader
 {
-private:
-	int program;
 public:
+	int program;
 	Shader(const char* vertexShaderFilepath, const char* fragmentShaderFilepath);
 	unsigned int CreateShader(const char* shaderSource, unsigned int type);
 	unsigned int CreateProgram(unsigned int vertexShader, unsigned int fragmentShader);
