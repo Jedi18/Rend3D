@@ -6,11 +6,18 @@
 class Camera
 {
 private:
-	glm::mat4 view;
+	glm::vec3 cameraPos;
+	glm::vec3 cameraFront;
+	glm::vec3 cameraUp;
+	double mousex, mousey;
+	float yaw = -90.0f;
+	float pitch = 0.0f;
+	bool firstused; // boolean to enable functionality after first movement of mouse (to avoid jump during starting)
 public:
 	enum class MoveDirection {UP, DOWN, LEFT, RIGHT};
 	float FOV;
 	Camera(float fov);
-	glm::mat4& GetView();
+	glm::mat4 GetView();
 	void MoveCamera(MoveDirection dir, float& deltaTime);
+	void RotateCamera(double& xpos, double& ypos);
 };

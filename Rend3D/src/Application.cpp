@@ -25,6 +25,7 @@ Camera camera(45.0f);
 GLFWwindow* Initialization();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void cursor_move_callback(GLFWwindow* window, double xpos, double ypos);
 
 int main()
 {
@@ -32,6 +33,7 @@ int main()
 
 	// set function callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, cursor_move_callback);
 
 	VertexArray vao;
 	Cube cube(vao);
@@ -140,4 +142,9 @@ void processInput(GLFWwindow* window)
 	{
 		camera.MoveCamera(Camera::MoveDirection::RIGHT, deltaTime);
 	}
+}
+
+void cursor_move_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	camera.RotateCamera(xpos, ypos);
 }
