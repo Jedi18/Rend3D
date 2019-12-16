@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
+#include "Rectangle.h"
 
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
@@ -22,29 +23,8 @@ int main()
 	// set function callbacks
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	/*
-		Test Data
-	*/
-	float vertices[] = {
-		0.5f, 0.5f, 1.0f,
-		-0.5f, 0.5f, 1.0f,
-		-0.5f, -0.5f, 1.0f,
-		0.5f, -0.5f, 1.0f
-	};
-
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
 	VertexArray vao;
-	VertexBuffer vbo(sizeof(vertices), vertices);
-	IndexBuffer ibo(sizeof(indices), indices);
-
-	VertexBufferLayout layout;
-	layout.Push<float>(3);
-
-	vao.AttributeLayout(vbo, layout);
+	Rectangle rect1(vao);
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 
@@ -54,9 +34,9 @@ int main()
 		processInput(window);
 
 		vao.Bind();
-		ibo.Bind();
 		shader.Use();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		rect1.Draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
+    <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\vendor\glad.c" />
     <ClCompile Include="src\vendor\stb_image.cpp" />
@@ -133,7 +134,9 @@
     <ClCompile Include="src\VertexBufferLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Cube.h" />
     <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\Rectangle.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\vendor\stb_image.h" />
     <ClInclude Include="src\VertexArray.h" />
