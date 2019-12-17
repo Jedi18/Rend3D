@@ -20,7 +20,7 @@ const int SCREEN_HEIGHT = 600;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-Camera camera(45.0f);
+Camera camera(45.0f, false);
 
 GLFWwindow* Initialization();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -37,6 +37,8 @@ int main()
 
 	VertexArray vao;
 	Cube cube(vao);
+	VertexArray vao2;
+	Cube cube2(vao2);
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/fragment.shader");
 
@@ -57,6 +59,9 @@ int main()
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::translate(model, glm::vec3(0.0f, 0.0f, -5.0f));
 
+		glm::mat4 model2 = glm::mat4(1.0f);
+		model2 = glm::translate(model2, glm::vec3(0.0f, 0.0f, -10.0f));
+
 		glm::mat4 view = camera.GetView();
 
 		glm::mat4 projection = glm::mat4(1.0f);
@@ -71,6 +76,11 @@ int main()
 		glUniformMatrix4fv(modelloc, 1, GL_FALSE, glm::value_ptr(model));
 
 		cube.Draw();
+
+		vao2.Bind();
+		glUniformMatrix4fv(modelloc, 1, GL_FALSE, glm::value_ptr(model2));
+
+		cube2.Draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -107,6 +117,9 @@ GLFWwindow* Initialization()
 	}
 
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+	// hide cursor
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
 	return window;
 }

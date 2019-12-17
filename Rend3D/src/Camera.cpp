@@ -1,12 +1,13 @@
 #include "Camera.h"
 
-Camera::Camera(float fov)
+Camera::Camera(float fov, bool fly_mode)
 	:
 	cameraPos(0.0f, 0.0f, 0.0f),
 	cameraFront(0.0f, 0.0f, -1.0f),
 	cameraUp(0.0f, 1.0f, 0.0f),
 	FOV(fov),
-	firstused(false)
+	firstused(false),
+	FLY_MODE(fly_mode)
 {
 }
 
@@ -18,6 +19,8 @@ glm::mat4 Camera::GetView()
 void Camera::MoveCamera(MoveDirection dir, float& deltaTime)
 {
 	float moveSpeed =  deltaTime; // negative because we want camera to move in opposite direction
+
+	float yPos = cameraPos.y;
 
 	if (dir == Camera::MoveDirection::UP)
 	{
@@ -39,6 +42,12 @@ void Camera::MoveCamera(MoveDirection dir, float& deltaTime)
 	{
 		glm::vec3 perpend = glm::normalize(glm::cross(cameraFront, cameraUp));
 		cameraPos += moveSpeed * perpend;
+	}
+
+	// if FLY MODE is disabled, reset y of camera to old value
+	if (!FLY_MODE)
+	{
+		cameraPos.y = yPos;
 	}
 }
 
